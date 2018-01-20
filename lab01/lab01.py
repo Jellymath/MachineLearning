@@ -151,7 +151,7 @@ print(statistics.variance(scores))
 
 print("Cycle begins")
 for score_function in [metrics.recall_score, metrics.accuracy_score, metrics.f1_score]:
-    for k_fold in zip([2, 5, 8, 10]):
+    for k_fold in [2, 5, 8, 10]:
         means = []
         variances = []
         possible_k_neigh = range(2, 21)

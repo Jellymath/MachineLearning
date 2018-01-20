@@ -152,14 +152,14 @@ def try_solution(x_train, y_train, x_test, y_test):
     x_train = scale(x_train)
     x_test = scale(x_test)
 
-    logistic = LogisticRegression(C=1.0)
+    logistic = LogisticRegression(C=10.0)
     logistic.fit(x_train, y_train)
     print("LOGISTIC REGRESSION ON ORIGINAL DATASET")
     print(classification_report(y_test, logistic.predict(x_test)))
 
-    rbm = BernoulliRBM(n_components=200, n_iter=40,
+    rbm = BernoulliRBM(n_components=200, n_iter=20,
                        learning_rate=0.01, verbose=True)
-    logistic = LogisticRegression(C=1.0)
+    logistic = LogisticRegression(C=100.0)
 
     classifier = Pipeline([("rbm", rbm), ("logistic", logistic)])
     classifier.fit(x_train, y_train)
@@ -177,18 +177,18 @@ if __name__ == '__main__':
                     help="whether or not a grid search should be performed")
     args = vars(ap.parse_args())
 
-    digits_X_train, digits_Y_train = get_labeled_data("digits/train-images-idx3-ubyte.gz",
-                                                      "digits/train-labels-idx1-ubyte.gz")
-    digits_X_test, digits_Y_test = get_labeled_data("digits/t10k-images-idx3-ubyte.gz",
-                                                    "digits/t10k-labels-idx1-ubyte.gz")
+    # digits_X_train, digits_Y_train = get_labeled_data("digits/train-images-idx3-ubyte.gz",
+    #                                                   "digits/train-labels-idx1-ubyte.gz")
+    # digits_X_test, digits_Y_test = get_labeled_data("digits/t10k-images-idx3-ubyte.gz",
+    #                                                 "digits/t10k-labels-idx1-ubyte.gz")
 
     letters_X, letters_Y = get_letters()
     letters_X_train, letters_X_test, letters_Y_train, letters_Y_test = train_test_split(letters_X, letters_Y,
                                                                                         test_size=0.2)
 
     if args["search"] == 1:
-        find_optimal(digits_X_train, digits_Y_train)
-        # find_optimal(letters_X_train, letters_Y_train)
+        # find_optimal(digits_X_train, digits_Y_train)
+        find_optimal(letters_X_train, letters_Y_train)
     else:
-        try_solution(digits_X_train, digits_Y_train, digits_X_test, digits_Y_test)
-        # try_solution(letters_X_train, letters_Y_train, letters_X_test, letters_Y_test)
+        # try_solution(digits_X_train, digits_Y_train, digits_X_test, digits_Y_test)
+        try_solution(letters_X_train, letters_Y_train, letters_X_test, letters_Y_test)
